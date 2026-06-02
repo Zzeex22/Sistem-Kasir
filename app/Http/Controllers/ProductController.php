@@ -20,13 +20,16 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        // 1. Validasi dulu biar datanya bersih
+        $validated = $request->validate([
             'nama_barang' => 'required',
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
 
-        Product::create($request->all());
+        // 2. Simpan pakai data yang udah divalidasi
+        Product::create($validated);
+        
         return redirect()->route('barang.index')->with('success', 'Barang berhasil ditambahkan!');
     }
 
@@ -37,13 +40,16 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $barang)
     {
-        $request->validate([
+        // 1. Validasi ulang buat data yang mau diedit
+        $validated = $request->validate([
             'nama_barang' => 'required',
             'harga' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
 
-        $barang->update($request->all());
+        // 2. Update datanya
+        $barang->update($validated);
+        
         return redirect()->route('barang.index')->with('success', 'Data barang berhasil diupdate!');
     }
 

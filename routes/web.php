@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KasirController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,4 +27,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('barang', ProductController::class)->middleware(['auth', 'verified']);
+Route::get('/riwayat', [TransactionController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('riwayat.index');
 require __DIR__.'/auth.php';
