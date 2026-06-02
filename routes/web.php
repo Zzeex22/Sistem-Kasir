@@ -1,18 +1,22 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-Use App\Http\Controllers\KasirController;
+use App\Http\Controllers\KasirController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('dashboard', [KasirController::class, 'index'])->name('kasir.dashboard');
+// Halaman Dashboard (Kasir)
+Route::get('/dashboard', [KasirController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Proses Simpan Transaksi ke Database
+Route::post('/checkout', [KasirController::class, 'store'])
+    ->middleware(['auth', 'verified'])
+    ->name('checkout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
